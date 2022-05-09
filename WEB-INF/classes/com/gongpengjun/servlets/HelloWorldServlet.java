@@ -6,13 +6,48 @@ import javax.servlet.http.*;
 import javax.servlet.*;
 
 public class HelloWorldServlet extends HttpServlet {
-  public void doGet (HttpServletRequest req,
-                     HttpServletResponse res)
-    throws ServletException, IOException
-  {
-    PrintWriter out = res.getWriter();
 
-    out.println("Hello, world!");
-    out.close();
-  }
+   @Override
+   public void init(ServletConfig config) throws ServletException {
+      super.init(config);
+      System.out.println("HelloWorldServlet init, ServletContext.Class:" + this.getServletContext().getClass().getName());
+   }
+
+   @Override
+   public void destroy() {
+      System.out.println("HelloWorldServlet destroy");
+      super.destroy();
+   }
+
+   @Override
+   public void doGet(HttpServletRequest request, HttpServletResponse response)
+               throws IOException, ServletException {
+      // Set the response message's MIME type
+      response.setContentType("text/html;charset=UTF-8");
+      // Allocate a output writer to write the response message into the network socket
+      PrintWriter out = response.getWriter();
+ 
+      // Write the response message, in an HTML page
+      try {
+         out.println("<!DOCTYPE html>");
+         out.println("<html><head>");
+         out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
+         out.println("<title>Hello, World</title></head>");
+         out.println("<body>");
+         out.println("<h1>Hello, world!</h1>");  // says Hello
+         // Echo servlet context info
+         out.println("<p>Servlet Context: " + this.getServletContext().getClass().getName() + "</p>");
+         // Echo client's request information
+         out.println("<p>Request URI: " + request.getRequestURI() + "</p>");
+         out.println("<p>Protocol: " + request.getProtocol() + "</p>");
+         out.println("<p>PathInfo: " + request.getPathInfo() + "</p>");
+         out.println("<p>Remote Address: " + request.getRemoteAddr() + "</p>");
+         // Generate a random number upon each request
+         out.println("<p>A Random Number: <strong>" + Math.random() + "</strong></p>");
+         out.println("</body>");
+         out.println("</html>");
+      } finally {
+         out.close();  // Always close the output writer
+      }
+   }
 }
