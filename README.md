@@ -103,6 +103,8 @@ $ ls -lh WEB-INF/classes/com/gongpengjun/servlets/HelloWorldServlet.class
 
 please refer step 1.2 for `JETTY_BASE`
 
+#### 3.2.1 deploy method - copy classes and resource files Directory Structure
+
 ```shell
 $ cd $JETTY_BASE
 # create servlet folder
@@ -126,6 +128,43 @@ webapps/helloservlet
 └── index.html
 
 5 directories, 3 files
+```
+
+#### 3.2.2 deploy method - war
+
+build war mannually
+
+```shell
+# create output folder
+$ mkdir -p output
+# copy class file
+$ mkdir -p output/WEB-INF/classes/com/gongpengjun/servlets/
+$ cp standalone-jetty-hello-world/WEB-INF/classes/com/gongpengjun/servlets/HelloWorldServlet.class output/WEB-INF/classes/com/gongpengjun/servlets/
+# copy web.xml
+$ cp standalone-jetty-hello-world/WEB-INF/web.xml output/WEB-INF/
+# copy index.html
+$ cp standalone-jetty-hello-world/index.html output/
+# generate war
+$ cd output
+$ jar cfv helloservlet.war *
+# check war
+$ jar tf helloservlet.war
+META-INF/
+META-INF/MANIFEST.MF
+WEB-INF/
+WEB-INF/classes/
+WEB-INF/classes/com/
+WEB-INF/classes/com/gongpengjun/
+WEB-INF/classes/com/gongpengjun/servlets/
+WEB-INF/classes/com/gongpengjun/servlets/HelloWorldServlet.class
+WEB-INF/web.xml
+index.html
+```
+
+copy war to webapps
+
+```shell
+$ cp helloservlet.war $JETTY_BASE/webapps/helloservlet.war
 ```
 
 ### 3.3 launch jetty
